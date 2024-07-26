@@ -3,7 +3,6 @@ import sqlite3
 import sys
 
 db = sqlite3.connect("todo.db")
-db.row_factory = sqlite3.Row
 
 db.execute("""
 create table if not exists task (
@@ -21,9 +20,9 @@ if cmd == 'list':
     tasks = db.execute('select * from task').fetchall()
     for task in tasks:
         status = '▢'
-        if task['complete']:
+        if task[2]:
             status = '✓'
-        print('%d. %s %s' % (task['id'], task['name'], status))
+        print('%d. %s %s' % (task[0], task[1], status))
 elif cmd == 'add':
     task_name = sys.argv[2]
     db.execute('insert into task (name, complete) values (?, 0)', (task_name,))
